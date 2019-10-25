@@ -47,7 +47,7 @@ namespace Narrator
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
-				endpoints.MapHub<StateController>("/state");
+				endpoints.MapHub<EncounterHub>("/Encounter/Sync");
 			});
 		}
 	}
