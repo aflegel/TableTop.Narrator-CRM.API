@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Dapper;
+using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Narrator.Models;
 
 namespace Narrator.Services
 {
@@ -19,6 +21,13 @@ namespace Narrator.Services
 			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
 
 			return await connection.QueryFirstAsync<T>("SELECT TOP 1 Description FROM Encounter");
+		}
+
+		public async Task<long> Insert<T>(T item) where T : Encounter
+		{
+			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+
+			return await connection.InsertAsync(item);
 		}
 	}
 }
