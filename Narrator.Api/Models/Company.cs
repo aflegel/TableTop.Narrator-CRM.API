@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dapper.Contrib.Extensions;
 
 namespace Narrator.Models
 {
 	public class Company
 	{
+		[Key]
 		public Guid CompanyId { get; set; }
 
 		public string Name { get; set; }

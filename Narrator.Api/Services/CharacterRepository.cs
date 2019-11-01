@@ -11,6 +11,8 @@ namespace Narrator.Services
 	{
 		private IConfiguration Configuration { get; }
 
+		private SqlConnection Connection => new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+
 		public CharacterRepository(IConfiguration configuration)
 		{
 			Configuration = configuration;
@@ -18,16 +20,18 @@ namespace Narrator.Services
 
 		public async Task<T> FetchFirst<T>()
 		{
-			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+			using var connection = Connection;
 
-			return await connection.QueryFirstAsync<T>("SELECT TOP 1 Description FROM Character");
+			return await connection.QueryFirstAsync<T>("SELECT TOP 1 * FROM Characters");
 		}
 
 		public async Task<long> Insert<T>(T item)
 		{
-			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+			using var connection = Connection;
 
 			return await connection.InsertAsync(item as Character);
 		}
+
+		public bool MatchType<T>() => typeof(T) == typeof(Character);
 	}
 }

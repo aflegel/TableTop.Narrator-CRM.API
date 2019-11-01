@@ -12,5 +12,7 @@ namespace Narrator.Services
 	{
 		Task<T> FetchFirst<T>();
 		Task<long> Insert<T>(T item);
+
+		bool MatchType<T>();
 	}
 }

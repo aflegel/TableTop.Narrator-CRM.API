@@ -20,7 +20,7 @@ namespace Narrator.Services
 		{
 			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
 
-			return await connection.QueryFirstAsync<T>("SELECT TOP 1 Description FROM Encounter");
+			return await connection.QueryFirstAsync<T>("SELECT TOP 1 * FROM Encounters");
 		}
 
 		public async Task<long> Insert<T>(T item)
@@ -29,5 +29,7 @@ namespace Narrator.Services
 
 			return await connection.InsertAsync(item as Encounter);
 		}
+
+		public bool MatchType<T>() => typeof(T) == typeof(Encounter);
 	}
 }

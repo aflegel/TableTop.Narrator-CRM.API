@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -10,12 +11,12 @@ namespace Narrator.Controllers
 	public class CompanyHub : Hub
 	{
 		private ILogger<CompanyHub> Logger { get; }
-		private IRepository Repository { get; }
+		private IEnumerable<IRepository> Repositories { get; }
 
-		public CompanyHub(ILogger<CompanyHub> logger, IRepository repository)
+		public CompanyHub(ILogger<CompanyHub> logger, IEnumerable< IRepository> repositories)
 		{
 			Logger = logger;
-			Repository = repository;
+			Repositories = repositories;
 		}
 
 		public async Task JoinGroup(string groupName)
@@ -34,7 +35,7 @@ namespace Narrator.Controllers
 
 		public async Task GetEncounter(string groupName)
 		{
-			var item = await Repository.FetchFirst<Encounter>();
+			var item = await Repositories.First(f => f.MatchType<Encounter>()).FetchFirst<Encounter>();
 
 			await Clients.Group(groupName).SendAsync("Encounter", item);
 		}
