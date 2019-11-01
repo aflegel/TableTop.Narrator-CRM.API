@@ -7,11 +7,11 @@ using Narrator.Models;
 
 namespace Narrator.Services
 {
-	public class Repository: IRepository
+	public class CharacterRepository<T> : IRepository where T : Character
 	{
 		private IConfiguration Configuration { get; }
 
-		public Repository(IConfiguration configuration)
+		public CharacterRepository(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
@@ -20,14 +20,14 @@ namespace Narrator.Services
 		{
 			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
 
-			return await connection.QueryFirstAsync<T>("SELECT TOP 1 Description FROM Encounter");
+			return await connection.QueryFirstAsync<T>("SELECT TOP 1 Description FROM Character");
 		}
 
-		public async Task<long> Insert<T>(T item) where T : Encounter
+		public async Task<long> Insert<T>(T item)
 		{
 			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
 
-			return await connection.InsertAsync(item);
+			return await connection.InsertAsync(item as Character);
 		}
 	}
 }

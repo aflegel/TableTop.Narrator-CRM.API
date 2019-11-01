@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[Loots]
+(
+	[LootId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Name] NVARCHAR(50) NOT NULL, 
+    [Description] NVARCHAR(MAX) NULL, 
+    [Value] DECIMAL(18, 4) NOT NULL
+)

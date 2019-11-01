@@ -13,7 +13,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.data
 *.[Bb]ak
 
 # User-specific files (MonoDevelop/Xamarin Studio)

@@ -11,5 +11,6 @@ namespace Narrator.Services
 	public interface IRepository
 	{
 		Task<T> FetchFirst<T>();
+		Task<long> Insert<T>(T item);
 	}
 }

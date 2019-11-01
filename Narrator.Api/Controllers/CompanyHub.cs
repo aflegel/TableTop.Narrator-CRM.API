@@ -7,12 +7,12 @@ using Narrator.Services;
 
 namespace Narrator.Controllers
 {
-	public class EncounterHub : Hub
+	public class CompanyHub : Hub
 	{
-		private ILogger<EncounterHub> Logger { get; }
+		private ILogger<CompanyHub> Logger { get; }
 		private IRepository Repository { get; }
 
-		public EncounterHub(ILogger<EncounterHub> logger, IRepository repository)
+		public CompanyHub(ILogger<CompanyHub> logger, IRepository repository)
 		{
 			Logger = logger;
 			Repository = repository;

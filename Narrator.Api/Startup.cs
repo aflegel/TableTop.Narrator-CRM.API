@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Narrator.Controllers;
+using Narrator.Models;
 using Narrator.Services;
 
 namespace Narrator
@@ -22,7 +23,7 @@ namespace Narrator
 		{
 			services.AddCors();
 			services.AddSignalR();
-			services.AddSingleton<IRepository, Repository>();
+			services.AddSingleton<IRepository, EncounterRepository<Encounter>>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +48,7 @@ namespace Narrator
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapHub<EncounterHub>("/Encounter/Sync");
+				endpoints.MapHub<CompanyHub>("/Encounter/Sync");
 			});
 		}
 	}
