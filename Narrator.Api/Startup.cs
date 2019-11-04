@@ -23,9 +23,8 @@ namespace Narrator
 		{
 			services.AddCors();
 			services.AddSignalR();
-			services.AddSingleton<IRepository<Encounter>, EncounterRepository>();
-			services.AddSingleton<IRepository<Character>, CharacterRepository>();
-			services.AddSingleton<IRepository<Transaction>, TransactionRepository>();
+			services.AddSingleton<IRepository, EncounterRepository<Encounter>>();
+			services.AddSingleton<IRepository, CharacterRepository<Character>>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +49,7 @@ namespace Narrator
 
 			app.UseEndpoints(endpoints =>
 			{
+				endpoints.MapHub<EncounterHub>("/Encounter/Sync");
 				endpoints.MapHub<CompanyHub>("/Company/Sync");
 			});
 		}

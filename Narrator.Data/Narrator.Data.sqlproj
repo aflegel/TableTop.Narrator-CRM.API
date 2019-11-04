@@ -73,7 +73,4 @@
     <Build Include="dbo\Tables\LootTransactionEncounters.sql" />
     <Build Include="dbo\GetRemainingCount.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="Narrator.Data.refactorlog" />
-  </ItemGroup>
 </Project>
