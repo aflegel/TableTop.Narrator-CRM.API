@@ -7,7 +7,7 @@ using Narrator.Models;
 
 namespace Narrator.Services
 {
-	public class CharacterRepository<T> : IRepository where T : Character
+	public class CharacterRepository : IRepository<Character>
 	{
 		private IConfiguration Configuration { get; }
 
@@ -18,20 +18,32 @@ namespace Narrator.Services
 			Configuration = configuration;
 		}
 
-		public async Task<T> FetchFirst<T>()
+		public async Task<Character> Select()
 		{
 			using var connection = Connection;
 
-			return await connection.QueryFirstAsync<T>("SELECT TOP 1 * FROM Characters");
+			return await connection.QueryFirstAsync<Character>("SELECT TOP 1 * FROM Characters");
 		}
 
-		public async Task<long> Insert<T>(T item)
+		public async Task<long> Insert(Character item)
 		{
 			using var connection = Connection;
 
-			return await connection.InsertAsync(item as Character);
+			return await connection.InsertAsync(item);
 		}
 
-		public bool MatchType<T>() => typeof(T) == typeof(Character);
+		public async Task<bool> Update(Character item)
+		{
+			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+
+			return await connection.UpdateAsync(item);
+		}
+
+		public async Task<bool> Delete(Character item)
+		{
+			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+
+			return await connection.DeleteAsync(item);
+		}
 	}
 }

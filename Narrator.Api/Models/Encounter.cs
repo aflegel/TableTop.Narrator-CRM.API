@@ -6,6 +6,12 @@ namespace Narrator.Models
 {
 	public class Encounter
 	{
+		public Encounter()
+		{
+			CharacterEncounters = new List<CharacterEncounter>();
+			TransactionLootEncounters = new List<TransactionLootEncounter>();
+		}
+
 		[Key]
 		public Guid EncounterId { get; set; }
 		public Guid CompanyId { get; set; }

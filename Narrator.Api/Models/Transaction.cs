@@ -7,11 +7,20 @@ namespace Narrator.Models
 {
 	public class Transaction
 	{
+		public Transaction()
+		{
+			TransactionLootCharacters = new List<LootTransactionCharacter>();
+			TransactionLootEncounters = new List<TransactionLootEncounter>();
+		}
+
 		[Key]
 		public Guid TransactionId { get; set; }
 
-		public List<TransactionLoot> TransactionLoots { get; set; }
+		public string Description { get; set; }
 
-		public bool IsValid() => TransactionLoots.Sum(s => s.Quantity) == 0;
+		public List<LootTransactionCharacter> TransactionLootCharacters { get; set; }
+		public List<TransactionLootEncounter> TransactionLootEncounters { get; set; }
+
+		public bool IsValid() => TransactionLootEncounters.Sum(s => s.Quantity) == 0;
 	}
 }

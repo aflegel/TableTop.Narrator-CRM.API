@@ -6,6 +6,12 @@ namespace Narrator.Models
 {
 	public class Loot
 	{
+		public Loot()
+		{
+			TransactionLootCharacters = new List<LootTransactionCharacter>();
+			TransactionLootEncounters = new List<TransactionLootEncounter>();
+		}
+
 		[Key]
 		public Guid LootId { get; set; }
 		public Guid CompanyId { get; set; }
@@ -16,6 +22,7 @@ namespace Narrator.Models
 
 		public Company Company { get; set; }
 
-		public List<TransactionLoot> TransactionLoots { get; set; }
+		public List<LootTransactionCharacter> TransactionLootCharacters { get; set; }
+		public List<TransactionLootEncounter> TransactionLootEncounters { get; set; }
 	}
 }

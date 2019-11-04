@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -8,36 +7,31 @@ using Narrator.Services;
 
 namespace Narrator.Controllers
 {
-	public class CompanyHub : Hub
+	public interface IComapnyHub
+	{
+		public Task Sync(object payload);
+	}
+
+	public class CompanyHub : Hub<IComapnyHub>
 	{
 		private ILogger<CompanyHub> Logger { get; }
-		private IEnumerable<IRepository> Repositories { get; }
+		private IRepository<Transaction> Repository { get; }
 
-		public CompanyHub(ILogger<CompanyHub> logger, IEnumerable< IRepository> repositories)
+		public CompanyHub(ILogger<CompanyHub> logger, IRepository<Transaction> repository)
 		{
 			Logger = logger;
-			Repositories = repositories;
+			Repository = repository;
 		}
 
-		public async Task JoinGroup(string groupName)
+		public async Task JoinGroup(string groupName) => await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+		public async Task LeaveGroup(string groupName) => await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+
+		public async Task GetTransactions()
 		{
-			await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+			var test = await Repository.Select();
 
-			await Clients.Group(groupName).SendAsync("JoinGroup", $"{Context.ConnectionId} has joined the group {groupName}.");
-		}
-
-		public async Task LeaveGroup(string groupName)
-		{
-			await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
-
-			await Clients.Group(groupName).SendAsync("LeftGroup", $"{Context.ConnectionId} has left the group {groupName}.");
-		}
-
-		public async Task GetEncounter(string groupName)
-		{
-			var item = await Repositories.First(f => f.MatchType<Encounter>()).FetchFirst<Encounter>();
-
-			await Clients.Group(groupName).SendAsync("Encounter", item);
+			await Clients.Clients(Context.ConnectionId).Sync(test);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
@@ -7,8 +8,8 @@ using Narrator.Models;
 
 namespace Narrator.Services
 {
-	public class EncounterRepository<T>: IRepository where T : Encounter
-	{
+	public class EncounterRepository: IRepository<Encounter>
+	{ 
 		private IConfiguration Configuration { get; }
 
 		public EncounterRepository(IConfiguration configuration)
@@ -16,20 +17,32 @@ namespace Narrator.Services
 			Configuration = configuration;
 		}
 
-		public async Task<T> FetchFirst<T>()
+		public async Task<Encounter> Select()
 		{
 			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
 
-			return await connection.QueryFirstAsync<T>("SELECT TOP 1 * FROM Encounters");
+			return await connection.QueryFirstAsync<Encounter>("SELECT TOP 1 * FROM Encounters");
 		}
 
-		public async Task<long> Insert<T>(T item)
+		public async Task<long> Insert(Encounter item)
 		{
 			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
 
-			return await connection.InsertAsync(item as Encounter);
+			return await connection.InsertAsync(item);
 		}
 
-		public bool MatchType<T>() => typeof(T) == typeof(Encounter);
+		public async Task<bool> Update(Encounter item)
+		{
+			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+
+			return await connection.UpdateAsync(item);
+		}
+
+		public async Task<bool> Delete(Encounter item)
+		{
+			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+
+			return await connection.DeleteAsync(item);
+		}
 	}
 }

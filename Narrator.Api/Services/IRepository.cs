@@ -8,11 +8,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace Narrator.Services
 {
-	public interface IRepository
+	public interface IRepository<T>
 	{
-		Task<T> FetchFirst<T>();
-		Task<long> Insert<T>(T item);
+		Task<T> Select();
+		Task<long> Insert(T item);
+		Task<bool> Delete(T item);
+		Task<bool> Update(T item);
 
-		bool MatchType<T>();
 	}
 }
