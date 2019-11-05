@@ -12,11 +12,11 @@ using Narrator.Models;
 
 namespace Narrator.Services
 {
-	public class TransactionRepository : IRepository<Transaction>
+	public class LootTransactionRepository : IRepository<Transaction>
 	{
 		private IConfiguration Configuration { get; }
 
-		public TransactionRepository(IConfiguration configuration)
+		public LootTransactionRepository(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
@@ -40,20 +40,15 @@ namespace Narrator.Services
 			connection.QueryAsync<LootTransactionCharacter>("SELECT TOP 10 * FROM Transactions WHERE TransactionID = '83F023E9-B743-4525-97B8-D6C5341302FD'"),
 			connection.QueryAsync<LootTransactionEncounter>("SELECT TOP 10 * FROM Transactions WHERE TransactionID = '83F023E9-B743-4525-97B8-D6C5341302FD'"));
 
-		private async Task<int> GetRemainingCount(SqlConnection connection, Guid encounterId, Guid lootId) => (await connection.QueryAsync<int>("GetRemainingCount", new { EncounterId = encounterId, LootId = lootId },
-				commandType: CommandType.StoredProcedure)).FirstOrDefault();
+		private Task<IEnumerable<int>> GetRemainingCount(SqlConnection connection, Guid encounterId, Guid lootId) => connection.QueryAsync<int>("GetRemainingCount", new { EncounterId = encounterId, LootId = lootId },
+				commandType: CommandType.StoredProcedure);
 
 		public async Task<long> Insert(Transaction item)
 		{
 			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
 			// quantity must not be 0
 			//GetRemainingCount + quantity must not be less than 0
-			var lootTransactions = item.TransactionLootEncounters.GroupBy(i => new { i.LootId, i.EncounterId });
-			var lootRemaining = lootTransactions.Select(async s => (await GetRemainingCount(connection, s.Key.LootId, s.Key.EncounterId)) <= 0)
-				.Select(t => t.Result)
-				.Any(t => !t);
-
-			//var remaining = await GetRemainingCount(connection, Guid.Parse("374665DC-9076-4558-B106-E9A703D1F384"), Guid.Parse("D422CC1B-7B1A-484A-AC13-B1DD2B4C1E1E"));
+			var remaining = await GetRemainingCount(connection, Guid.Parse("374665DC-9076-4558-B106-E9A703D1F384"), Guid.Parse("D422CC1B-7B1A-484A-AC13-B1DD2B4C1E1E"));
 
 			return await connection.InsertAsync(item);
 		}

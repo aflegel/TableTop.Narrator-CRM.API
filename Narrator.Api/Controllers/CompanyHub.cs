@@ -7,12 +7,13 @@ using Narrator.Services;
 
 namespace Narrator.Controllers
 {
-	public interface IComapnyHub
+	public interface ICompanyHub
 	{
 		public Task Sync(object payload);
+		public Task Error(string message);
 	}
 
-	public class CompanyHub : Hub<IComapnyHub>
+	public class CompanyHub : Hub<ICompanyHub>
 	{
 		private ILogger<CompanyHub> Logger { get; }
 		private IRepository<Transaction> Repository { get; }

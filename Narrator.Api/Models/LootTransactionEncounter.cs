@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 
 namespace Narrator.Models
 {
-	public class TransactionLootEncounter
+	public class LootTransactionEncounter
 	{
 		[Key]
 		public Guid LootId { get; set; }

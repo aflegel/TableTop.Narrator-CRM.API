@@ -23,8 +23,9 @@ namespace Narrator
 		{
 			services.AddCors();
 			services.AddSignalR();
-			services.AddSingleton<IRepository, EncounterRepository<Encounter>>();
-			services.AddSingleton<IRepository, CharacterRepository<Character>>();
+			services.AddSingleton<IRepository<Encounter>, EncounterRepository>();
+			services.AddSingleton<IRepository<Character>, CharacterRepository>();
+			services.AddSingleton<IRepository<Transaction>, TransactionRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

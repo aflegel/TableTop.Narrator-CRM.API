@@ -9,7 +9,7 @@ namespace Narrator.Models
 		public Loot()
 		{
 			TransactionLootCharacters = new List<LootTransactionCharacter>();
-			TransactionLootEncounters = new List<TransactionLootEncounter>();
+			TransactionLootEncounters = new List<LootTransactionEncounter>();
 		}
 
 		[Key]
@@ -23,6 +23,6 @@ namespace Narrator.Models
 		public Company Company { get; set; }
 
 		public List<LootTransactionCharacter> TransactionLootCharacters { get; set; }
-		public List<TransactionLootEncounter> TransactionLootEncounters { get; set; }
+		public List<LootTransactionEncounter> TransactionLootEncounters { get; set; }
 	}
 }
