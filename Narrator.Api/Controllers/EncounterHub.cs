@@ -15,32 +15,42 @@ namespace Narrator.Controllers
 
 		private IHubContext<CompanyHub, ICompanyHub> CompanyHub { get; }
 
-		private IRepository<Transaction> Repository { get; }
+		private CompanyRepository Repository { get; }
 
-		public EncounterHub(ILogger<EncounterHub> logger, IHubContext<CompanyHub, ICompanyHub> companyHub, IRepository<Transaction> repository)
+		public EncounterHub(ILogger<EncounterHub> logger, IHubContext<CompanyHub, ICompanyHub> companyHub, CompanyRepository repository)
 		{
 			Logger = logger;
 			Repository = repository;
 			CompanyHub = companyHub;
 		}
+
+		public async Task Get(Guid companyId)
+		{
+			var result = await Repository.Select();
+
+			await CompanyHub.Clients.Group(companyId.ToString()).Sync(result);
+		}
+
 		public async Task Update(Guid companyId)
 		{
 			var test = new Transaction
 			{
-				TransactionId = new Guid(),
-				TransactionLootEncounters = new List<LootTransactionEncounter>
+				TransactionId = Guid.NewGuid(),
+				Description = "Sample Insert",
+				LootTransactionEncounters = new List<LootTransactionEncounter>
 				{
 					new LootTransactionEncounter
 					{
-						TransactionId = new Guid(),
-						EncounterId = new Guid()
+						LootId = Guid.Parse("D422CC1B-7B1A-484A-AC13-B1DD2B4C1E1E"), //Guid.NewGuid(),
+						EncounterId = Guid.Parse("374665DC-9076-4558-B106-E0A703D1F384"), //Guid.NewGuid()
+						Quantity = -1
 					}
 				}
 			};
 
 			var result = Repository.Insert(test);
 
-			await CompanyHub.Clients.Group(companyId.ToString()).Sync("I have an update");
+			await CompanyHub.Clients.Group(companyId.ToString()).Sync(result);
 		}
 	}
 }

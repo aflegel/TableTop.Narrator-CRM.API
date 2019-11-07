@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Dapper.Contrib.Extensions;
 
 namespace Narrator.Models
 {
@@ -9,18 +7,15 @@ namespace Narrator.Models
 	{
 		public Transaction()
 		{
-			TransactionLootCharacters = new List<LootTransactionCharacter>();
-			TransactionLootEncounters = new List<LootTransactionEncounter>();
+			LootTransactionCharacters = new List<LootTransactionCharacter>();
+			LootTransactionEncounters = new List<LootTransactionEncounter>();
 		}
 
-		[Key]
 		public Guid TransactionId { get; set; }
 
 		public string Description { get; set; }
 
-		public List<LootTransactionCharacter> TransactionLootCharacters { get; set; }
-		public List<LootTransactionEncounter> TransactionLootEncounters { get; set; }
-
-		public bool IsValid() => TransactionLootEncounters.Sum(s => s.Quantity) == 0;
+		public List<LootTransactionCharacter> LootTransactionCharacters { get; set; }
+		public List<LootTransactionEncounter> LootTransactionEncounters { get; set; }
 	}
 }

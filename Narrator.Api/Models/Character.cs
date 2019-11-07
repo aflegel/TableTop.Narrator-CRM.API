@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dapper.Contrib.Extensions;
+using System.Text.Json.Serialization;
 
 namespace Narrator.Models
 {
@@ -9,9 +9,9 @@ namespace Narrator.Models
 		public Character()
 		{
 			CharacterEncounters = new List<CharacterEncounter>();
-			TransactionLootCharacters = new List<LootTransactionCharacter>();
+			LootTransactionCharacters = new List<LootTransactionCharacter>();
 		}
-		[Key]
+
 		public Guid CharacterId { get; set; }
 		public Guid CompanyId { get; set; }
 
@@ -19,9 +19,10 @@ namespace Narrator.Models
 		public string Description { get; set; }
 		public string Player { get; set; }
 
+		[JsonIgnore]
 		public Company Company { get; set; }
 
 		public List<CharacterEncounter> CharacterEncounters { get; set; }
-		public List<LootTransactionCharacter> TransactionLootCharacters { get; set; }
+		public List<LootTransactionCharacter> LootTransactionCharacters { get; set; }
 	}
 }

@@ -8,4 +8,4 @@ AS
 	FROM LootTransactionEncounters
 	WHERE EncounterId = @EncounterId AND LootId = @LootId
 	GROUP BY LootId
-RETURN RemainingQuantity
+RETURN

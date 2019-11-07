@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dapper.Contrib.Extensions;
+using System.Text.Json.Serialization;
 
 namespace Narrator.Models
 {
@@ -8,21 +8,17 @@ namespace Narrator.Models
 	{
 		public Loot()
 		{
-			TransactionLootCharacters = new List<LootTransactionCharacter>();
-			TransactionLootEncounters = new List<LootTransactionEncounter>();
+			LootTransactionCharacters = new List<LootTransactionCharacter>();
+			LootTransactionEncounters = new List<LootTransactionEncounter>();
 		}
 
-		[Key]
 		public Guid LootId { get; set; }
-		public Guid CompanyId { get; set; }
 
-		public string Title { get; set; }
+		public string Name { get; set; }
 		public string Description { get; set; }
 		public decimal Value { get; set; }
 
-		public Company Company { get; set; }
-
-		public List<LootTransactionCharacter> TransactionLootCharacters { get; set; }
-		public List<LootTransactionEncounter> TransactionLootEncounters { get; set; }
+		public List<LootTransactionCharacter> LootTransactionCharacters { get; set; }
+		public List<LootTransactionEncounter> LootTransactionEncounters { get; set; }
 	}
 }

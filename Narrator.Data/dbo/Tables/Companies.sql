@@ -1,6 +1,7 @@
-﻿CREATE TABLE [dbo].[Companies]
-(
-	[CompanyId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
-    [Name] NVARCHAR(50) NOT NULL, 
-    [Description] NVARCHAR(MAX) NULL
-)
+﻿CREATE TABLE [dbo].[Companies] (
+    [CompanyId]   UNIQUEIDENTIFIER NOT NULL,
+    [Name]        NVARCHAR (MAX)   NULL,
+    [Description] NVARCHAR (MAX)   NULL,
+    CONSTRAINT [PK_Companies] PRIMARY KEY CLUSTERED ([CompanyId] ASC)
+);
+

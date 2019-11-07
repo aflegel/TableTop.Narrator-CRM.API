@@ -1,21 +1,21 @@
 ﻿using System;
-using Dapper.Contrib.Extensions;
+using System.Text.Json.Serialization;
 
 namespace Narrator.Models
 {
 	public class LootTransactionEncounter
 	{
-		[Key]
 		public Guid LootId { get; set; }
-		[Key]
 		public Guid TransactionId { get; set; }
-		[Key]
 		public Guid EncounterId { get; set; }
 
 		public int Quantity { get; set; }
 
+		[JsonIgnore]
 		public Transaction Transaction { get; set; }
+		[JsonIgnore]
 		public Loot Loot { get; set; }
+		[JsonIgnore]
 		public Encounter Encounter { get; set; }
 	}
 }

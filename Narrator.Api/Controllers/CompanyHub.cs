@@ -1,8 +1,7 @@
-﻿using System;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using Narrator.Models;
 using Narrator.Services;
 
 namespace Narrator.Controllers
@@ -16,13 +15,14 @@ namespace Narrator.Controllers
 	public class CompanyHub : Hub<ICompanyHub>
 	{
 		private ILogger<CompanyHub> Logger { get; }
-		private IRepository<Transaction> Repository { get; }
+		private CompanyRepository Repository { get; }
 
-		public CompanyHub(ILogger<CompanyHub> logger, IRepository<Transaction> repository)
+		public CompanyHub(ILogger<CompanyHub> logger, CompanyRepository repository)
 		{
 			Logger = logger;
 			Repository = repository;
 		}
+
 
 		public async Task JoinGroup(string groupName) => await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 

@@ -1,7 +1,8 @@
-﻿CREATE TABLE [dbo].[Loots]
-(
-	[LootId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
-    [Name] NVARCHAR(50) NOT NULL, 
-    [Description] NVARCHAR(MAX) NULL, 
-    [Value] DECIMAL(18, 4) NOT NULL
-)
+﻿CREATE TABLE [dbo].[Loots] (
+    [LootId]      UNIQUEIDENTIFIER NOT NULL,
+    [Name]        NVARCHAR (MAX)   NULL,
+    [Description] NVARCHAR (MAX)   NULL,
+    [Value]       DECIMAL (18, 2)  NOT NULL,
+    CONSTRAINT [PK_Loots] PRIMARY KEY CLUSTERED ([LootId] ASC)
+);
+

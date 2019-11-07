@@ -1,18 +1,18 @@
 ﻿using System;
-using Dapper.Contrib.Extensions;
+using System.Text.Json.Serialization;
 
 namespace Narrator.Models
 {
 	public class CharacterEncounter
 	{
-		[Key]
 		public Guid CharacterId { get; set; }
-		[Key]
 		public Guid EncounterId { get; set; }
 
 		public int Shares { get; set; }
 
+		[JsonIgnore]
 		public Character Character { get; set; }
+		[JsonIgnore]
 		public Encounter Encounter { get; set; }
 	}
 }

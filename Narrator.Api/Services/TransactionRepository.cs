@@ -1,75 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
-using Dapper.Contrib.Extensions;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Narrator.Models;
 
 namespace Narrator.Services
 {
-	public class TransactionRepository : IRepository<Transaction>
+	public static class TransactionRepository
 	{
-		private IConfiguration Configuration { get; }
-
-		public TransactionRepository(IConfiguration configuration)
+		public static async Task<Transaction> Select(this CompanyRepository repository)
 		{
-			Configuration = configuration;
-		}
+			var transId = Guid.Parse("83F023E9-B743-4525-97B8-D6C5341302FD");
 
-		public async Task<Transaction> Select()
-		{
-			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
+			var transCharacterTask = await repository.LootTransactionCharacters.AsAsyncQueryable().Where(w => w.TransactionId == transId).ToListAsync();
+			var transEncounterTask = await repository.LootTransactionEncounters.AsAsyncQueryable().Where(w => w.TransactionId == transId).ToListAsync();
+			var transaction = await repository.Transactions.AsAsyncQueryable().Where(w => w.TransactionId == transId).FirstOrDefaultAsync();
 
-			var (transactionTask, transCharacterTask, transEncounterTask) = GetTransactionTasks(connection);
-
-			var transaction = await transactionTask;
-
-			transaction.TransactionLootCharacters = (await transCharacterTask).ToList();
-			transaction.TransactionLootEncounters = (await transEncounterTask).ToList();
+			transaction.LootTransactionCharacters = (transCharacterTask);
+			transaction.LootTransactionEncounters = (transEncounterTask);
 
 			return transaction;
 		}
 
-		public (Task<Transaction>, Task<IEnumerable<LootTransactionCharacter>>, Task<IEnumerable<LootTransactionEncounter>>) GetTransactionTasks(SqlConnection connection) =>
-			(connection.QueryFirstAsync<Transaction>("SELECT TOP 1 * FROM Transactions WHERE TransactionID = '83F023E9-B743-4525-97B8-D6C5341302FD'"),
-			connection.QueryAsync<LootTransactionCharacter>("SELECT TOP 10 * FROM Transactions WHERE TransactionID = '83F023E9-B743-4525-97B8-D6C5341302FD'"),
-			connection.QueryAsync<LootTransactionEncounter>("SELECT TOP 10 * FROM Transactions WHERE TransactionID = '83F023E9-B743-4525-97B8-D6C5341302FD'"));
+		private static int GetRemainingCount(this CompanyRepository repository, Guid encounterId, Guid lootId) => repository.GetRemainingCount(encounterId, lootId);
 
-		private async Task<int> GetRemainingCount(SqlConnection connection, Guid encounterId, Guid lootId) => (await connection.QueryAsync<int>("GetRemainingCount", new { EncounterId = encounterId, LootId = lootId },
-				commandType: CommandType.StoredProcedure)).FirstOrDefault();
-
-		public async Task<long> Insert(Transaction item)
+		public static Transaction Insert(this CompanyRepository repository, Transaction item)
 		{
-			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
 			// quantity must not be 0
 			//GetRemainingCount + quantity must not be less than 0
-			var lootTransactions = item.TransactionLootEncounters.GroupBy(i => new { i.LootId, i.EncounterId });
-			var lootRemaining = lootTransactions.Select(async s => (await GetRemainingCount(connection, s.Key.LootId, s.Key.EncounterId)) <= 0)
-				.Select(t => t.Result)
+			var lootTransactions = item.LootTransactionEncounters.GroupBy(i => new { i.LootId, i.EncounterId });
+			var lootRemaining = lootTransactions.Select(s => (repository.GetRemainingCount(s.Key.LootId, s.Key.EncounterId)) <= 0)
 				.Any(t => !t);
 
 			//var remaining = await GetRemainingCount(connection, Guid.Parse("374665DC-9076-4558-B106-E9A703D1F384"), Guid.Parse("D422CC1B-7B1A-484A-AC13-B1DD2B4C1E1E"));
-
-			return await connection.InsertAsync(item);
-		}
-
-		public async Task<bool> Update(Transaction item)
-		{
-			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
-
-			return await connection.UpdateAsync(item);
-		}
-
-		public async Task<bool> Delete(Transaction item)
-		{
-			using var connection = new SqlConnection(Configuration.GetConnectionString("AdventureCompany"));
-
-			return await connection.DeleteAsync(item);
+			var result = repository.Transactions.Add(item);
+			return result.Entity;
 		}
 	}
 }

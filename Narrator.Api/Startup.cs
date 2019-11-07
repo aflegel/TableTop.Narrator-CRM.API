@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,9 +24,9 @@ namespace Narrator
 		{
 			services.AddCors();
 			services.AddSignalR();
-			services.AddSingleton<IRepository<Encounter>, EncounterRepository>();
-			services.AddSingleton<IRepository<Character>, CharacterRepository>();
-			services.AddSingleton<IRepository<Transaction>, TransactionRepository>();
+			services.AddDbContext<CompanyRepository>(options => options.UseSqlServer(Configuration.GetConnectionString("AdventureCompany"))
+			//options.UseNpgsql(Configuration.GetConnectionString("AdventureCompany"))
+			);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
