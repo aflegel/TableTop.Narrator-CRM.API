@@ -12,12 +12,10 @@ namespace Narrator.Services
 		{
 			var transId = Guid.Parse("83F023E9-B743-4525-97B8-D6C5341302FD");
 
-			var transCharacterTask = await repository.LootTransactionCharacters.AsAsyncQueryable().Where(w => w.TransactionId == transId).ToListAsync();
-			var transEncounterTask = await repository.LootTransactionEncounters.AsAsyncQueryable().Where(w => w.TransactionId == transId).ToListAsync();
 			var transaction = await repository.Transactions.AsAsyncQueryable().Where(w => w.TransactionId == transId).FirstOrDefaultAsync();
 
-			transaction.LootTransactionCharacters = (transCharacterTask);
-			transaction.LootTransactionEncounters = (transEncounterTask);
+			transaction.LootTransactionCharacters = await repository.LootTransactionCharacters.AsAsyncQueryable().Where(w => w.TransactionId == transId).ToListAsync();
+			transaction.LootTransactionEncounters = await repository.LootTransactionEncounters.AsAsyncQueryable().Where(w => w.TransactionId == transId).ToListAsync();
 
 			return transaction;
 		}

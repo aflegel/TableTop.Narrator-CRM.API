@@ -18,5 +18,6 @@ namespace Narrator.Models
 
 		public List<Character> Characters { get; set; }
 		public List<Encounter> Encounters { get; set; }
+		public List<Loot> Loots { get; set; }
 	}
 }

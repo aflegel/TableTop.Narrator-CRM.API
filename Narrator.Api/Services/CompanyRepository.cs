@@ -33,13 +33,15 @@ namespace Narrator.Services
 
 			modelBuilder.Entity<Character>()
 				.HasOne(e => e.Company)
-				.WithMany(c => c.Characters)
-				.OnDelete(DeleteBehavior.ClientSetNull);
+				.WithMany(c => c.Characters);
 
 			modelBuilder.Entity<Encounter>()
 				.HasOne(e => e.Company)
-				.WithMany(c => c.Encounters)
-				.OnDelete(DeleteBehavior.ClientSetNull);
+				.WithMany(c => c.Encounters);
+
+			modelBuilder.Entity<Loot>()
+				.HasOne(e => e.Company)
+				.WithMany(c => c.Loots);
 
 			modelBuilder.Entity<CharacterEncounter>()
 				.HasOne(e => e.Character)
