@@ -20,11 +20,6 @@ namespace Narrator.Services
 		public DbSet<LootTransactionCharacter> LootTransactionCharacters { get; set; }
 		public DbSet<LootTransactionEncounter> LootTransactionEncounters { get; set; }
 
-		public ObjectResult<int> GetRemainingLoot(Guid encounterId, Guid lootId) =>
-			((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<int>("GetRemainingLoot",
-				new ObjectParameter("encounterId", encounterId),
-				new ObjectParameter("lootId", lootId));
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<CharacterEncounter>().HasKey(composite => new { composite.CharacterId, composite.EncounterId });
