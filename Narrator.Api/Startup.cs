@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Narrator.Controllers;
+using Narrator.Services;
 
 namespace Narrator
 {
@@ -20,8 +22,8 @@ namespace Narrator
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddCors();
-			services.AddControllers();
 			services.AddSignalR();
+			services.AddDbContext<CompanyRepository>(options => options.UseSqlServer(Configuration.GetConnectionString("AdventureCompany")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,8 +48,8 @@ namespace Narrator
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllers();
 				endpoints.MapHub<EncounterHub>("/Encounter/Sync");
+				endpoints.MapHub<CompanyHub>("/Company/Sync");
 			});
 		}
 	}
