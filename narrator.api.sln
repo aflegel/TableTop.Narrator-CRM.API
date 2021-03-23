@@ -16,12 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Narrator.Data", "Narrator.Data\Narrator.Data.sqlproj", "{818B1BFC-DC07-4DF5-9DF2-5D1DEA9EFCA7}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BoutinFlegel.Authentication.Proto", "BoutinFlegel.Authentication.Proto\BoutinFlegel.Authentication.Proto.shproj", "{BD25A06B-6012-4A1E-A21B-7B911E8EBC93}"
-EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		BoutinFlegel.Authentication.Proto\BoutinFlegel.Authentication.Proto.projitems*{bd25a06b-6012-4a1e-a21b-7b911e8ebc93}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
