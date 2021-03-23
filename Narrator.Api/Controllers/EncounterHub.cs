@@ -12,9 +12,7 @@ namespace Narrator.Controllers
 	public class EncounterHub : Hub
 	{
 		private ILogger<EncounterHub> Logger { get; }
-
 		private IHubContext<CompanyHub, ICompanyHub> CompanyHub { get; }
-
 		private CompanyRepository Repository { get; }
 
 		public EncounterHub(ILogger<EncounterHub> logger, IHubContext<CompanyHub, ICompanyHub> companyHub, CompanyRepository repository)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Narrator.Models;
 
 namespace Narrator.Services
