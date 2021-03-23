@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -14,13 +15,41 @@ namespace Narrator.Controllers
 		private ILogger<EncounterHub> Logger { get; }
 		private IHubContext<CompanyHub, ICompanyHub> CompanyHub { get; }
 		private CompanyRepository Repository { get; }
+		private Timer Interval { get; }
+		private ClockService ClockService { get; }
 
-		public EncounterHub(ILogger<EncounterHub> logger, IHubContext<CompanyHub, ICompanyHub> companyHub, CompanyRepository repository)
+		public EncounterHub(ILogger<EncounterHub> logger, IHubContext<CompanyHub, ICompanyHub> companyHub, CompanyRepository repository, ClockService clockService)
 		{
 			Logger = logger;
 			Repository = repository;
 			CompanyHub = companyHub;
+			ClockService = clockService;
+			// Interval = new Timer(Loop, null, 0, 1000);
 		}
+
+		private void Loop(object state)
+		{
+			Logger.LogInformation($"static tick {DateTime.Now:HH:mm:ss}");
+
+			LoopAsync();
+			//Control.BeginInvoke(LoopAsync());
+		}
+
+
+		private void LoopAsync()
+		{
+			var time = ClockService.GetTime();
+
+			CompanyHub.Clients.All.Sync(time);
+
+			Logger.LogInformation("emit tick");
+		}
+
+		public async Task Join(string groupName) => await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+		public async Task Leave(string groupName) => await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+
+		public async Task Increment(string companyId, int number) => await Clients.Group(companyId).SendAsync("Increment", number);
+		public async Task Decrement(string companyId, int number) => await Clients.Group(companyId).SendAsync("Decrement", number);
 
 		public async Task Get(Guid companyId)
 		{

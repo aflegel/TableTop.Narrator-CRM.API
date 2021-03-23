@@ -1,9 +1,8 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 
 namespace Narrator.Api.Tests
 {
-    public class UnitTest1
+	public class UnitTest1
     {
         [Fact]
         public void Test1()
@@ -12,7 +11,7 @@ namespace Narrator.Api.Tests
 			 * case 1 Adding loot
 				Quantity will be positive
 				Should have a single Encounter/Character
-				Should 
+				Should
 
 			Transferring loot (loot claims)
 				Quantity for each loot should be net 0

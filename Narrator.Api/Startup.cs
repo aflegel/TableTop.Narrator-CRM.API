@@ -23,6 +23,8 @@ namespace Narrator
 		{
 			services.AddCors();
 			services.AddSignalR();
+
+			services.AddSingleton<ClockService>();
 			services.AddDbContext<CompanyRepository>(options => options.UseSqlServer(Configuration.GetConnectionString("AdventureCompany")));
 		}
 

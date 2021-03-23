@@ -10,20 +10,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.3.0" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.23.2" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.36.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
-    <PackageReference Include="System.Linq.Async" Version="4.0.0" />
-    <PackageReference Include="System.Linq.Async.Queryable" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <PackageReference Include="System.Linq.Async.Queryable" Version="5.0.0" />
   </ItemGroup>
 
+  <Import Project="..\BoutinFlegel.Authentication.Proto\BoutinFlegel.Authentication.Proto.projitems" Label="Shared" />
+	<ItemGroup>
+		<Protobuf Include="..\BoutinFlegel.Authentication.Proto\greet.proto" GrpcServices="Client">
+			<Link>Protos\greet.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\BoutinFlegel.Authentication.Proto\time.proto" GrpcServices="Client">
+			<Link>Protos\time.proto</Link>
+		</Protobuf>
+	</ItemGroup>
 </Project>

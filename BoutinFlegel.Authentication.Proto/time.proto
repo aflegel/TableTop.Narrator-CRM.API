@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "BoutinFlegel.Authentication.Proto";
+
+// The greeting service definition.
+service Clock {
+  // Sends a greeting
+  rpc GetTime (Empty) returns (GetTimeResponse) {}
+}
+
+// The request message containing the user's name.
+message Empty {
+}
+
+// The response message containing the greetings.
+message GetTimeResponse {
+	google.protobuf.Timestamp time = 1;
+}
